@@ -53,7 +53,26 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
     ```
      Confirm the value for NAME is listed as Debian.
           <img width="784" height="342" alt="image" src="https://github.com/user-attachments/assets/7302c55a-1101-42b4-98d6-e0a6c337ccf1" />
-
-
-    
+          
+  - Navigate to the official Docker documentation for installing the Docker Engine on Debian Linux (https://docs.docker.com/engine/install/debian/).  This project walkthrough will use the apt installation method.
+  - Restore the SSH session and enter the following command to update the Docker’s Apt repository. As the root user is logged in, sudo commands are omitted.
+    ```
+          apt-get update
+    ```
+  - Run the following command to install ca-certificates, the curl command line tool, and gnupg (GNU Privacy Guard).
+    ```
+          apt-get install ca-certificates curl gnupg
+    ```
+  - Install to the /etc/apt/keyrings directory (-d) with permissions (-m) set as 0755. The 0755 permission sets full control to the owner, as well as read and execute permissions to the group and everyone else
+    ```
+          install -m 0755 -d /etc/apt/keyrings
+    ```
+  - The curl command downloads the official Docker GPG key from the official Docker site. The --dearmor option for the gpg command line tool unshields PEM armors and writes (-o) to the /etc/apt/keyrings/docker.gpg            directory. (https://www.gnupg.org/documentation/manuals/gnupg/Operational-GPG-Commands.html).
+    ```
+          curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    ```  
+  - Grant all users read permission to /etc/apt/keyrings/docker.gpg
+    ```
+          chmod a+r /etc/apt/keyrings/docker.gpg
+    ```
 - Run nginx container
