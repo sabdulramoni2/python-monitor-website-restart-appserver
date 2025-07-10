@@ -207,4 +207,6 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
                   print('Application Down. Fix it!')
       ```
 
-            
+  - Email Notification
+    - If the HTTP status code renders a value other than 200, there is a problem with the nginx web application and user access is unavailable. In this section, the Python program will introduce logic to automatically         send an email notification whenever the web application is down.
+    - Begin by importing the built-in smtplib library. Add the import statement underneath the existing import requests statement.      
