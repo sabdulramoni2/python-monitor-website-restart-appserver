@@ -75,4 +75,22 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
     ```
           chmod a+r /etc/apt/keyrings/docker.gpg
     ```
+  - Add the “stable” Docker repository to Apt and update apt-get to prepare Docker for installation:
+    ```
+          echo \
+          "deb [arch="$(dpkg --print-architecture)" signed by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+          "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+          tee /etc/apt/sources.list.d/docker.list > /dev/null
+          apt-get update
+    ```
+  - Install the Docker engine and all relevant plugins (e.g. docker-compose).
+    ```
+          apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    ```
+  - Confirm docker is now available to use by issuing the following command:
+    ```
+          docker -v
+    ```
+          <img width="705" height="163" alt="image" src="https://github.com/user-attachments/assets/d1f76dbc-192c-4280-b96b-60ad5e6ae641" />
+
 - Run nginx container
