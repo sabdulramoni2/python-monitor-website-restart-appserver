@@ -176,3 +176,35 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
       ```
     - Rerun the Python program. The output is displayed below showing the 200 HTTP response code:
       <img width="975" height="128" alt="image" src="https://github.com/user-attachments/assets/663e09b3-ea3e-4a2d-b225-dc4e4bbabd45" />
+      
+    - Printing the output of response.status_code from Step 12 provides the foundation to formulate a conditional if/else statement for printing different output based on the HTTP status code.
+    - First, delete the following print statement:
+      ```
+            print(response.status_code)
+      ```
+
+    - If the HTTP status code is 200, use an if statement to display output on the screen that the application is running successfully:
+      ```
+            if response.status_code == 200:
+            print(‘Application is running successfully!’)
+      ```
+      <img width="975" height="202" alt="image" src="https://github.com/user-attachments/assets/d4d0fe86-21bd-47ea-813d-3aaafa413e34" />
+
+    - If the HTTP status code is a value other than 200, use an else statement to print that the application is down.
+      ```
+            else:
+            print(‘Application Down. Fix it!’)
+      ```
+    - The monitor-website.py program up to this point is shown below:
+      ```
+              import requests
+
+              response = requests.get('http://66-228-39-99.ip.linodeusercontent.com:8080/')
+
+              if response.status_code == 200:
+                  print('Application is running successfully!')
+              else:
+                  print('Application Down. Fix it!')
+      ```
+
+            
