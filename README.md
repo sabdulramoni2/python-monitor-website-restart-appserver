@@ -94,3 +94,8 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
     <img width="705" height="163" alt="image" src="https://github.com/user-attachments/assets/d1f76dbc-192c-4280-b96b-60ad5e6ae641" />
 
 - Run nginx container
+  - This section uses Docker to create a nginx container on the Linode-hosted Linux server.
+    In the SSH session, execute the following command to run a nginx container. The -d option runs the container in detached mode, and the -p option specifies the port (8080 being the container port and 80 being the host     port)
+    ```
+          docker run -d -p 8080:80 nginx
+    ```
