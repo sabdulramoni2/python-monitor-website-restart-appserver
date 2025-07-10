@@ -44,5 +44,15 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
           
     The SSH session into the Linode server is established.
 
-- Install Docker 
+- Install Docker
+  - This section installs Docker on the Linode-hosted Linux server.
+    ```
+           cat /etc/os-release
+    ```
+ 
+    Confirm the value for NAME is listed as Debian.
+            <img width="784" height="342" alt="image" src="https://github.com/user-attachments/assets/7302c55a-1101-42b4-98d6-e0a6c337ccf1" />
+
+
+Inside the SSH session, confirm the Linux distribution is Debian by entering the following command:
 - Run nginx container
