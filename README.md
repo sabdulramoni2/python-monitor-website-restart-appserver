@@ -292,9 +292,16 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
       <img width="975" height="220" alt="image" src="https://github.com/user-attachments/assets/60828cb8-9cd1-45ff-8d7f-cf805f68f005" />
 
 
-      - Check Gmail and confirm the email is received. Notice the email message mirrors exactly what is set as the msg variable.
+    - Check Gmail and confirm the email is received. Notice the email message mirrors exactly what is set as the msg variable.
         <img width="975" height="300" alt="image" src="https://github.com/user-attachments/assets/d0ebf371-0140-46a2-8dfc-a0e07412551e" />
 
+    - With testing complete, return to the PyCharm code editor and delete the if False: line of code from Step 24. Uncomment the original if statement.
+      
+  - Exception Handling
+    - Issue: The Python program thus far does not account for instances when no response is returned. In these cases, the following line of code (the response) throws an exception:
+      ```
+            response = requests.get('http://66-228-39-99.ip.linodeusercontent.com:8080/')
+      ```
 
 
 
