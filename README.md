@@ -140,6 +140,24 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
       <img width="744" height="978" alt="image" src="https://github.com/user-attachments/assets/ca45deb7-077a-4e3c-acca-049cd2d7f470" />
 
 
-      
+    - With the requests library installed, begin the monitor-website.py file by importing the requests library:
+      ```
+             import requests
+      ```
+      The remainder of code in this section pertaining to the requests library references the following documentation (https://pypi.org/project/requests/).
 
-
+    - Restore the Linode web portal and copy the DNS name of the Linux server to the clipboard. This is shown in Section I.C "Run nginx Container," Step 5 above.
+    - Use the get function of the requests module. Paste the URL from Step 5 as a parameter to the get function, enclosed in parentheses and single quotes
+      ```
+             requests.get('http://172-234-194-61.ip.linodeusercontent.com:8080/')
+      ```
+    - Set the get function of the requests module as a variable called response.
+      ```
+             response = requests.get('http://66-228-39-99.ip.linodeusercontent.com:8080/')
+      ```
+    - Use the built-in print function to print the response from the nginx application.
+      ``` print(response)
+      ```
+    - Run the program by right-clicking the monitor-website-py tab > Run ‘monitor-website.
+    - A Run pane will display at the bottom of PyCharm. Confirm the response is OK, as denoted by the 200 HTTP response code. For more information about HTTP response codes, reference the following link:                       https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+      <img width="975" height="211" alt="image" src="https://github.com/user-attachments/assets/814cc294-88dc-4e36-b8a8-fbd8abc550c7" />
