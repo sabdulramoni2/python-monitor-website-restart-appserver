@@ -209,4 +209,127 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
 
   - Email Notification
     - If the HTTP status code renders a value other than 200, there is a problem with the nginx web application and user access is unavailable. In this section, the Python program will introduce logic to automatically         send an email notification whenever the web application is down.
-    - Begin by importing the built-in smtplib library. Add the import statement underneath the existing import requests statement.      
+    - Begin by importing the built-in smtplib library. Add the import statement underneath the existing import requests statement.
+      ```
+              import smtplib
+      ```     
+      Note: Refer to the official Python documentation for more information about the smtplib library (https://docs.python.org/3/library/smtplib.html).
+
+    - Next, the SMTP server and port will be specified in the Python program.
+      In this project scenario, Gmail is used. The below screenshot is taken from official Google documentation and shows the SMTP server address and associated port (https://support.google.com/a/answer/176600?hl=en):
+      <img width="482" height="125" alt="image" src="https://github.com/user-attachments/assets/eef9f204-08ac-4e2a-9a67-b7a95fbcc52b" />
+
+      Using this information, locate the else statement written in monitor-website.py. Under the print statement, enter a couple carriage returns. Then, use the SMTP function to specify the use of Gmail's SMTP server on       port 587:
+      ```
+            smtplib.SMTP('smtp.gmail.com', 587)
+      ```
+    - As Gmail is an external application, a with statement will be needed for exception handling. Exceptions for Gmail may include login or connection-related errors, both of which are outside the control of the Python       application.
+      Use the following syntax to incorporate smtplib.SMTP('smtp.gmail.com', 587) from Step 2 as part of the with statement. The as keyword stores the smtplib.SMTP function as a variable called smtp:
+      ```
+             with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+      ```
+    - Inside the with statement block, call the starttls function on the smtp variable to ensure the connection between Gmail and the monitor-website.py Python program is encrypted
+      ```
+              smtp.starttls()
+      ```
+    - Inside the with statement block and under smtp.starttls(), enter a couple carriage returns. Call the ehlo() function on the smtp variable in order for Gmail to recognize the monitor-website.py Python program.
+      ```
+            smtp.ehlo()
+      ```
+    - For enhanced security, this program assumes that 2-Step Verification is turned on in the Google account. Before the smtp.login statement can be written in the with block, an application password will be generated        in the Google account. The application password provides permission to the Python program to act on the sender’s behalf.
+    - Open a web browser and navigate to https://myaccount.google.com. In the search bar, type in app and select App passwords in the search results.
+      <img width="496" height="140" alt="image" src="https://github.com/user-attachments/assets/80ab45a5-e5bc-4f1c-9eea-6c2a05a4c650" />
+      
+    - On the App passwords screen, enter website-monitor as the app name and click the Create button.
+      <img width="463" height="452" alt="image" src="https://github.com/user-attachments/assets/f3a05fed-9a83-4882-bdf2-46ce3d96adb4" />
+
+    - On the Generated app password dialog box, the app password will display on the screen. Copy the password to the clipboard and temporarily paste it in a text editor of choice. Click the Done button.
+      <img width="897" height="716" alt="image" src="https://github.com/user-attachments/assets/341c4fc9-45d5-40a1-b271-6de9a5a049de" />
+
+    - Return to the monitor-website.py Python program in the PyCharm editor. At the top of the program under the other import statements, import the built-in os library. More information about the os library can be            found here (https://docs.python.org/3/library/os.html).
+      ```
+            import os
+      ```
+    - With security in mind, the os library will be used to store the email username and password as environment variables so the credentials are not hardcoded in the program. Call the environ function of the os module        and get the value of the environment variables. Set both as variables natively in Python:
+      ```
+            EMAIL_ADDRESS = os.environ.get('EMAIL_ADDRESS')
+            EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+      ```
+      Note: EMAIL_ADDRESS and EMAIL_PASSWORD are known as constants, as they are set once and do not change. Constants should be in all caps to distinguish them from other native Python variables
+   
+    - In the with statement, under smtp.ehlo(), call the login function on the smtp variable and pass EMAIL_ADDRESS, and EMAIL_PASSWORD as parameters.
+      ```
+            smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+      ```
+
+    - In the upper righthand corner of PyCharm, click Current > Edit Configurations…
+    - On the Run/Debug Configurations screen, click the + button.
+    - In the Add New Configuration pane, select Python.
+    - Name the configuration the same as the Python program (monitor-website). In the Run section, leave the script dropdown selected. Browse out to the absolute path of the monitor-website.py program (i.e. C:\python-         monitor-website-restart-appserver\monitor-website.py). Set the working directory to the root path of the project folder (C:\python-monitor-website-restart-appserver).
+    - On the same screen as above, click the icon in the Environment variables textbox.
+    - On the Environment Variables dialog box, click the + sign and add EMAIL_ADDRESS and EMAIL_PASSWORD as environment variables. From Step 8, paste the application password from the text editor as the value for              EMAIL_PASSWORD. Click OK.
+      <img width="875" height="839" alt="image" src="https://github.com/user-attachments/assets/6d5e2fae-d474-4945-a98b-becdb6578c6f" />
+    - Back on the Run/Debug Configurations screen, click OK to return to the editor.
+    - Before the last function can be called to send an email, set a variable for the message. The \n in Python starts a new line, but in this case, also functions to separate the subject from the message body.
+      ```
+            msg = "Subject: SITE DOWN\nFix the issue! Restart the application."
+      ```
+    - Last, call the sendmail function on the smtp variable and pass 3 parameters: the sender’s email address, the recipient's email address, and the message. For this project's use case, assume the sender and receiver        are the same.
+      ```
+            smtp.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, msg)
+      ```
+    - In the right hand corner of PyCharm, click the monitor-website dropdown. Next to the application name, click the green triangle icon to run the application.
+    - As the nginx container is currently in the running state, the monitor-website application executes the if logic of the program which prints output that the application is running successfully.
+      <img width="975" height="202" alt="image" src="https://github.com/user-attachments/assets/5ef15b64-493f-4fc6-9c71-b7ce611f0ae6" />
+    - To simulate the application being down, comment out the existing if statement. Add another if statement, setting it to False, to trigger the else statement to execute. Rerun the program.
+      ```
+            # if response.status_code == 200:
+            if False:
+                print('Application is running successfully!')
+      ```
+
+      The output from the Run pane confirms the else statement is executed.
+      <img width="975" height="220" alt="image" src="https://github.com/user-attachments/assets/60828cb8-9cd1-45ff-8d7f-cf805f68f005" />
+
+
+      - Check Gmail and confirm the email is received. Notice the email message mirrors exactly what is set as the msg variable.
+        <img width="975" height="300" alt="image" src="https://github.com/user-attachments/assets/d0ebf371-0140-46a2-8dfc-a0e07412551e" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
