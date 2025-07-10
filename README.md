@@ -126,7 +126,20 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
 
 - Python Program: monitor-website.py
   - This section provides a comprehensive walkthrough of writing the monitor-website.py Python program. First, the Python file is created in JetBrains PyCharm. Second, logic is written for a website request where an         if/else statement is evaluated based on whether the HTTP status code is 200. Next, an email notification is sent to IT staff in the event the HTTP status code is a value other than 200. Then, exception handling is       integrated into the Python program. This section continues with writing logic for restarting the nginx container and server. For code that repeats in the program, the logic for sending email, restarting the              container, and restarting the server is converted into functions. A time library is incorporated into the project for adding additional time between the server's running state and starting the nginx container.           Finally, the program uses the schedule library to automatically run on a scheduled cadence.
+    
+  - Website Request
+    - The purpose of the following Python logic is to programmatically access the nginx website from Python by DNS name. This mirrors a user browsing out to the nginx website in a web browser.
+    - In the terminal window, use the pip command to install the requests library from PyPi.
+      ```
+             pip install requests
+      ```
+      
+      <img width="975" height="243" alt="image" src="https://github.com/user-attachments/assets/c9d1d59c-a2eb-493e-ab28-b1076655ce51" />
+      
+    - Confirm the requests library is installed by expanding the External Libraries folder > < Python 3.11 > site-packages. The requests library will now be present.
+      <img width="744" height="978" alt="image" src="https://github.com/user-attachments/assets/ca45deb7-077a-4e3c-acca-049cd2d7f470" />
 
 
+      
 
 
