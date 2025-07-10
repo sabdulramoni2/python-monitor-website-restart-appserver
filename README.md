@@ -161,3 +161,18 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
     - Run the program by right-clicking the monitor-website-py tab > Run ‘monitor-website.
     - A Run pane will display at the bottom of PyCharm. Confirm the response is OK, as denoted by the 200 HTTP response code. For more information about HTTP response codes, reference the following link:                       https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
       <img width="975" height="211" alt="image" src="https://github.com/user-attachments/assets/814cc294-88dc-4e36-b8a8-fbd8abc550c7" />
+  
+    - To see the HTML displayed in the Run window, in the print statement, call the text function on the response variable:
+      ```
+            print(response.text)
+      ```
+    - Rerun the Python program. The output is displayed below:
+      <img width="975" height="466" alt="image" src="https://github.com/user-attachments/assets/8e0f530f-877d-4804-8227-467b886721ab" />
+
+      
+    - To display the numeric value of the HTTP response code 200, in the print statement, replace calling the text function with calling the status_code function:
+      ```
+            print(response.status_code)
+      ```
+    - Rerun the Python program. The output is displayed below showing the 200 HTTP response code:
+      <img width="975" height="128" alt="image" src="https://github.com/user-attachments/assets/663e09b3-ea3e-4a2d-b225-dc4e4bbabd45" />
