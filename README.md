@@ -30,9 +30,19 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
     ```
 
           <img width="975" height="295" alt="image" src="https://github.com/user-attachments/assets/e1da3890-2d0e-4470-b14f-bae834261b6b" />
+    
+  - Scroll to the bottom of the page and click the Create Linode button.
 
+          <img width="975" height="150" alt="image" src="https://github.com/user-attachments/assets/44023ac5-0a21-4f02-90de-78730fcabb88" />
 
-        
+  - The server will now be in the provisioning state.
+
+          <img width="975" height="301" alt="image" src="https://github.com/user-attachments/assets/fba1a676-d402-4596-bd7d-3e72746d5b97" />
+    
+  - Restore PowerShell and paste the SSH command from the clipboard. When prompted to continue connecting, type yes and press Enter.
+          <img width="975" height="416" alt="image" src="https://github.com/user-attachments/assets/bca197e6-6ff2-4b09-a1c3-5984d57274ab" />
+          
+    The SSH session into the Linode server is established.
 
 - Install Docker 
 - Run nginx container
