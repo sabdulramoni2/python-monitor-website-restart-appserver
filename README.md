@@ -34,6 +34,7 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
   - Scroll to the bottom of the page and click the Create Linode button.
 
           <img width="975" height="150" alt="image" src="https://github.com/user-attachments/assets/44023ac5-0a21-4f02-90de-78730fcabb88" />
+          
 
   - The server will now be in the provisioning state.
 
@@ -99,3 +100,16 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
     ```
           docker run -d -p 8080:80 nginx
     ```
+    <img width="975" height="281" alt="image" src="https://github.com/user-attachments/assets/8de53e2a-fac8-4861-bda0-959bb336c92b" />
+    
+  - Navigate back to the Akamai Linode web portal. Copy and paste the public IP address to the clipboard.
+    <img width="975" height="286" alt="image" src="https://github.com/user-attachments/assets/8710d753-54bf-49d3-8308-a146868a64fe" />
+  - Back on the Akamai Linode web portal tab, click inside the new Linux server instance to get more detailed information. Click on the Network Tab and copy the value for Reverse DNS to the clipboard.
+    <img width="975" height="172" alt="image" src="https://github.com/user-attachments/assets/39c711aa-3aee-48fd-9845-3fdece778c9c" />
+  - Open a new browser tab and paste the DNS name into the address bar, adding :8080 as the port.
+    <img width="975" height="411" alt="image" src="https://github.com/user-attachments/assets/4429c23d-b9e8-400c-b5c6-7d2297026f5d" />
+
+
+
+
+
