@@ -109,6 +109,23 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
   - Open a new browser tab and paste the DNS name into the address bar, adding :8080 as the port.
     <img width="975" height="411" alt="image" src="https://github.com/user-attachments/assets/4429c23d-b9e8-400c-b5c6-7d2297026f5d" />
 
+- Python Project Creation
+  - This schedule outlines the process of creating the Python project in JetBrains PyCharm and pushing the project to the GitLab repository.
+  - Open the JetBrains PyCharm code editor. In the upper lefthand corner, click the Hamburger Menu (≡) > File > New Project.
+    <img width="811" height="430" alt="image" src="https://github.com/user-attachments/assets/ee78fc6d-e688-4e0a-8377-216f56d5adf4" />
+  - Add a blank README.md file by right-clicking the root of the project folder > New > File. Name the file README.md.
+    <img width="975" height="416" alt="image" src="https://github.com/user-attachments/assets/b72043af-0ef2-44a1-96ac-844aaf59ed61" />
+  - Note: Although the installation of Git on Windows 11 is outside the scope of this project walkthrough, the Git installer can be found here: https://git-scm.com/download/win.
+  - Initalize the Git repository
+    <img width="975" height="177" alt="image" src="https://github.com/user-attachments/assets/b394928b-0c57-4ec7-a63a-023730824a17" />
+
+  - Add changes and set an initial commit message:
+    <img width="975" height="532" alt="image" src="https://github.com/user-attachments/assets/861a299d-b703-4d7d-96cc-b7de3a6ff3a0" />
+    <img width="975" height="378" alt="image" src="https://github.com/user-attachments/assets/19cfbb3b-8ff5-4c9d-a5b9-c1a6ed62cf50" />
+
+
+
+
 
 
 
