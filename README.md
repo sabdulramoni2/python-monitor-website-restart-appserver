@@ -6,21 +6,18 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
 ---
   
 ## **Feature**
-
-### **EKS provisioning using Terraform**
-
-- Install jenkins on digital ocean server
-- Install ansible on digital ocean server
-- Execute Ansible playbook from jenklins pipeline to configure 2 EC2 instances.
+- Create Server on Linode
+- Install Docker 
+- Run nginx container
 
 ### **Diagrammatic Presentation**
-- Install jenkins on digital ocean server
-  ![image](https://github.com/user-attachments/assets/8cc2a474-d175-4907-97bb-5b6651e1d006)
+- Create Server on Linode
+      - This section outlines creating a Linux server in the Akamai Linode cloud platform. This section concludes with establishing an SSH session into the server
+        <img width="975" height="317" alt="image" src="https://github.com/user-attachments/assets/4f5afbe3-db22-421a-82a1-ddc1ae5e1178" />
+      - On the Linodes/Create screen, ensure the Distributions tab is selected. From the Choose a Distribution section, accept the default image as Debian 11 from the dropdown. In the Region section, select the datacenter           location closest to the end users (Chicago, IL is selected for this project).  In the Linode Plan section, click on the Shared CPU tab and select the Linode 2GB option.
+        <img width="975" height="603" alt="image" src="https://github.com/user-attachments/assets/a0dcbf85-e725-4557-abd1-21488a1c1685" />
 
-  ![image](https://github.com/user-attachments/assets/4cf0542b-1117-444e-8342-0f00381a2efa)
+        
 
-  ![image](https://github.com/user-attachments/assets/ad6bb142-6759-4134-9f5c-065c121c9763)
-
-  ![image](https://github.com/user-attachments/assets/269f656a-1ce2-402f-b5c4-18b907bf7f3a)
-
-  ![image](https://github.com/user-attachments/assets/159cf267-4d2b-4fce-96ea-5ca052f09409)
+- Install Docker 
+- Run nginx container
