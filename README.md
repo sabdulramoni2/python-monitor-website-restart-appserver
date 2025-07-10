@@ -91,6 +91,6 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
     ```
           docker -v
     ```
-          <img width="705" height="163" alt="image" src="https://github.com/user-attachments/assets/d1f76dbc-192c-4280-b96b-60ad5e6ae641" />
+    <img width="705" height="163" alt="image" src="https://github.com/user-attachments/assets/d1f76dbc-192c-4280-b96b-60ad5e6ae641" />
 
 - Run nginx container
