@@ -683,9 +683,113 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
 
      
   - time Library
+    - To fail-proof the while loop written in the except block, the built-in time library will be leveraged as a precaution to factor in additional time between the server being in the running state and starting the           nginx container. More information about the built-in time library can be found here:  https://docs.python.org/3/library/time.html
+      - At the top of the monitor-website.py file, write an import statement underneath the other import statements to import the built-in time library:
+        ```
+                import time
+        ```
 
-          
-                  
+       - In the if statement of the while loop in the except block, call the sleep function of the time module and specify 5 seconds as the parameter.
+         ```
+                time.sleep(5)
+         ``` 
+       -  The complete infinite while loop in the except block will now look like this:
+         ```
+                     # restart the application
+                     while True:
+                     nginx_server = client.load(linode_api4.Instance, 50867697)
+                     if nginx_server.status == 'running':
+                        time.sleep(5)
+                        restart_container()
+                        break
+         ```
+    -  restart_server_and_container Function
+      - As best practice for tidying up the code into digestible and manageable blocks that can be reused, this section will detail placing the logic for restarting the server and container into its own function.
+        - Scroll to the top of the monitor-website.py program. Under the LINODE_TOKEN constant, enter a couple carriage returns. Define a new function called restart_server_and_container:
+          ```
+                def restart_server_and_container():
+          ```
+       
+        - Scroll to the bottom of the monitor-website.py program. In the except block, cut the entire code from the two comments (restart Linode server and restart the application) and paste it underneath the                      restart_server_and_container function. The restart_server_and_container function will now look like this:
+          ```
+                def restart_server_and_container():
+                      # restart Linode server
+                      print('Rebooting the server...')
+                      client = linode_api4.LinodeClient(LINODE_TOKEN)
+                      nginx_server = client.load(linode_api4.Instance, 50867697)
+                      nginx_server.reboot()
+
+                      # restart the application
+                      while True:
+                          nginx_server = client.load(linode_api4.Instance, 50867697)
+                          if nginx_server.status == 'running':
+                                time.sleep(5)
+                                restart_container()
+                                break
+          ```
+        - Under the send_notification function call in the except block, call the restart_server_and_container function without parameters. The complete except block will now look like this:
+          ```
+                    except Exception as ex:
+                        print(f'Connection error happened: {ex}')
+                        msg = f'Application is not accessible at all.'
+                        send_notification(msg)
+                        restart_server_and_container()
+          ```
+
+      - Schedule Monitoring Task
+        - For monitoring purposes, the final section of this project walkthrough outlines using the schedule library to dynamically run the program on a regularly scheduled cadence. For the sake of this project, the               application will run every 5 minutes but can be configured to run every hour or other desired interval.
+          - In the lefthand corner of PyCharm, click the Terminal icon to open PowerShell in the bottom pane.
+          - In the PowerShell window of the PyCharm editor, use pip to install the schedule library. This library will allow the program to be scheduled at a specified interval. The remainder of this section references              the official PyPi documentation located here: https://pypi.org/project/schedule/
+            ```
+                    pip install schedule
+            ```
+          - Confirm the schedule library is successfully installed by observing the terminal output:
+            <img width="975" height="275" alt="image" src="https://github.com/user-attachments/assets/7fbb4c44-2ae0-45cd-b1ec-43a7b7bdf824" />
+            
+          - At the top of the monitor-website.py file, underneath the other import statements, import the schedule library.
+            ```
+                  import schedule
+            ```
+         
+          - Above the try block, create a function called monitor_application.
+            ```
+                  def monitor_application():
+            ```
+          - Select the entire contents of the try and except blocks and indent them inside the monitor_application function.
+          - Beneath the monitor_application function, use the schedule library to run the monitor_application function every 5 minutes.
+            ```
+                  schedule.every(5).minutes.do(monitor_application)
+            ```
+         
+          - Last, at the very bottom of the Python file, implement the scheduled task in an infinite loop.
+            ```
+                  while True:
+                      schedule.run_pending()
+            ```
+
+          - For testing, change the interval from minutes to seconds.
+            ```
+                  schedule.every(5).seconds.do(monitor_application)
+            ```
+         
+          - Rerun the application and observe output. The nginx container is currently in the running state; thus, the program will continue to print the application is running successfully until the program is stopped.
+            <img width="975" height="224" alt="image" src="https://github.com/user-attachments/assets/2efff0a6-86d8-4de7-9b23-14a9cc9bbd6d" />
+
+         
+
+
+
+
+
+
+
+
+
+
+
+
+      
+   
 
 
 
