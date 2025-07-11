@@ -579,9 +579,11 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
 
      
        - Restore the PyCharm editor. Under the client variable in the except block, call the load function on the client variable. Pass two parameters: the first one to tell the load function the type of resource to              connect to (an instance) and the second one for the instance ID. Paste the instance ID from the clipboard as the second parameter. Set the load function call as a variable named nginx_server as shown below:
+         
          ```
                  nginx_server = client.load(linode_api4.Instance, 78380840)
         ```
+        
       - Finally, pass the reboot function to the nginx_server variable to restart the server.
 
         ```
@@ -589,11 +591,12 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
         ```           
 
       - Open a PowerShell window and SSH into the Linux host where the nginx container resides. Enter the docker ps command to reveal the container ID. Copy the container ID to the clipboard. Issue the docker stop               command to stop the container.
+        
         ```
                 docker ps
                 docker stop <container-id>
         ```
-        <img width="975" height="176" alt="image" src="https://github.com/user-attachments/assets/00a53a99-93c5-481c-a802-7462d3f87bdc" />
+    <img width="975" height="176" alt="image" src="https://github.com/user-attachments/assets/00a53a99-93c5-481c-a802-7462d3f87bdc" />
 
       - Rerun the program. Output will display on the screen that a connection error occurred.
       - Restore the Linode web portal and notice the server is in a rebooting state.
