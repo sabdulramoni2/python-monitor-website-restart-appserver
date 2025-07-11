@@ -426,8 +426,8 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
            - This error is caused by the message variable being the same in the function (globally) as it is in the context of the if/else statement. To remedy this issue, in the send_notification function, rename the                msg variable to message as shown below:
              
              ```
-                   message = f"Subject: SITE DOWN\n{email_msg}"
-            ```
+                     message = f"Subject: SITE DOWN\n{email_msg}"
+             ```
         
            - Also, in the sendmail function call on the smtp module, rename the msg variable that is passed as a parameter:
              
