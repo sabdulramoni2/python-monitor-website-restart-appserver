@@ -300,9 +300,10 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
   - Exception Handling
     - Issue: The Python program thus far does not account for instances when no response is returned. In these cases, the following line of code (the response) throws an exception:
       ```
-            response = requests.get('http://66-228-39-99.ip.linodeusercontent.com:8080/')
+            response = requests.get('http://172-234-194-61.ip.linodeusercontent.com:8080/')
       ```
-
+      An exception can occur if the connection is refused, there is a request timeout, or the nginx container is stopped. If the program is run in these cases, the if/else logic will not be executed at all. This issue         will be simulated in the following steps:
+      - SSH into the Linux host where the nginx container resides.
 
 
 
