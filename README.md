@@ -445,7 +445,198 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
 
 
     - Restart the nginx Container
+      - In the event the application code returns a value other than 200, one potential fix is to restart the nginx container. The following logic will be written in the else block and will leverage the Paramiko                 library. The Paramiko library will allow the program to SSH into the Linode server and run the docker start command.
+        - In the lefthand corner of PyCharm, click the Terminal icon to open PowerShell in the bottom pane.
+        - In the PowerShell window of the PyCharm editor, use pip to install the Paramiko library. This library will provide the ability to SSH into the Linode server and run Linux commands. The remainder of this                  section references the official Paramiko documentation located here: https://docs.paramiko.org/en/3.3/api/client.html.
+          
+          ```
+                   pip install paramiko
+          ```
+        - Confirm the Paramiko library is successfully installed by observing the terminal output:
+          <img width="975" height="150" alt="image" src="https://github.com/user-attachments/assets/c4b0a53b-3383-42e9-93eb-5945995b6887" />
 
+        - At the top of the monitor-website.py file, import the Paramiko library.
+          ```
+                import paramiko
+          ```
+        - Right after the send_notification function call in the else statement, enter a couple carriage returns. Write a comment to indicate the following logic will restart the application.
+          ```
+                # restart the application
+          ```
+        - Under the comment, call the SSHClient function on the Paramiko module to initialize a SSH client in the Python program. Set the function call to a variable named ssh.
+          ```
+                ssh = paramiko.SSHClient()
+          ```
+          
+        - Under the SSHClient function call, call the set_missing_host_key_policy function on the ssh variable. Pass the AutoAddPolicy function as a parameter within the function to dynamically add the local                       workstations’ missing host key to the Linode server. This will eliminate the need to interactively type Y when accessing the server by SSH for the first time.
+          ```
+                  ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())               
+          ```
+          
+        - Under the set_missing_host_key_policy function call, write a line of code to call the connect function on the ssh variable to establish a SSH connection. Specify three named parameters: hostname, username, and           key_filename. The hostname is the IP address of the Linode server and the username is root. The key_filename is the absolute path of the workstation’s private SSH key.
+          ```
+                 ssh.connect(hostname='66.228.39.99', username='root', key_filename='C:/Users/Joseph/.ssh/id_rsa')
+          ```
+                 
+          Note: the named port parameter is intentionally omitted as it is understood to use the default (port 22).
+          Note: When the ssh command is issued in a terminal, the -i option is not required if the default location of the private SSH key (~/.ssh/id_rsa) is used. Regardless, the Python program requires the absolute              path to the private SSH key no matter where the private SSH key resides.
+          
+        - Under the connect function fall, write a line of code to call the exec_command function on the ssh variable to issue Linux commands. For testing purposes, the Linux command that will be issued is the docker ps           command. Set the docker execution command to standard input, standard output, and standard error variables.
+          ```
+                  stdin, stdout, stderr = ssh.exec_command('docker ps')
+          ```
+          Note: Standard input is what the engineer types on their keyboard inside the terminal. Standard output is the results that display on the screen. Standard error is output that is shown if an error occurs.
+          
+        - For testing, add an if False: line of code to bypass the if statement and run the else logic. For now, comment out the initial if statement.
+          ```
+                  if False:
+                  # if response.status_code == 200:
+          ```
+        - Under the stdin, stdout, and stderr variables, print out the standard output.
+          ```
+                  print(stdout)
+          ```
+       
+        - Rerun the program and notice from the output that Paramiko generates a file.
+        - To read what is inside the ChannelFile, modify the print statement from Step 11 by calling the readlines function on the stdout variable.
+          ```
+                  print(stdout.readlines())
+          ```
+        
+        - Rerun the program and notice the docker ps command displays output as expected.
+          <img width="975" height="103" alt="image" src="https://github.com/user-attachments/assets/7129c6f9-80bc-4462-8b30-14a02f44556e" />
+          
+        - On the terminal window, scroll over and notice the container ID is displayed. Copy the container ID to the clipboard. Modify the docker command from step 9 to start the container
+          ```
+                  stdin, stdout, stderr = ssh.exec_command('docker start ID')
+          ```
+        - Under the print statement that displays stdout, close the SSH session by calling the close function on the ssh variable.
+          ```
+                  ssh.close()
+          ```
+        - After closing the SSH session, add a final line to display output to the user that the application has restarted
+          ```
+                  print('Application restarted')
+          ```      
+        - Delete the if False: statement and uncomment the original if statement
+       
+          
+    - Restart the Server
+      - Recall the except block handles the scenario where no response is returned because the server is not accessible to users. In this scenario, restarting the server itself will act to remedy the issue. This section         introduces the linode_api4 library to interface with Linode resource.
+        - In the lefthand corner of PyCharm, click the Terminal icon to open PowerShell in the bottom pane.
+        - In the PowerShell window of the PyCharm editor, use pip to install the Linode library. This library will provide the ability to interact with Linode resources (e.g. reboot a Linode server). The remainder of              this section references the official Linode documentation located here: https://pypi.org/project/linode-api4/.
+          ```
+                  pip install linode-api4
+          ```
+        - Confirm the Linode library is successfully installed by observing the terminal output:
+          <img width="975" height="127" alt="image" src="https://github.com/user-attachments/assets/b35d3804-d791-473d-b4c8-34734e76b193" />
+          
+        - At the top of the monitor-website.py file, import the Linode library.
+          ```
+                import linode_api4
+          ```
+        - In the except block after the send_notification function call, enter a couple carriage returns and write a comment to denote that logic will be written to restart the Linode server:
+          ```
+                  # restart Linode server
+          ```
+        - Under the restart Linode server comment, write a print statement to display output to the user the server is rebooting.
+          ```
+                   print('Rebooting the server...')
+          ```
+        - Under the restart Linode server comment, call theLinodeClient function on the linode_api4 module to establish a connection to the Linode account. Set the function call to a variable named client.
+          ```
+                  client = linode_api4.LinodeClient()
+          ```
+        - If the mouse hovers over the LinodeClient function, a warning appears that a token is missing. The token is required for authentication to the Linode account.
+          <img width="462" height="78" alt="image" src="https://github.com/user-attachments/assets/6a3cfa7f-b731-4b4b-8a60-a96afb20ff8e" />
+          
+        - Minimize the PyCharm editor and login to the Linode web portal. In the righthand corner, click the username of the account. In the My Profile section, click API tokens.
+          <img width="477" height="648" alt="image" src="https://github.com/user-attachments/assets/f60fad91-f0a1-41f0-bc92-ed19f5b4f337" />
+          
+        - Click the Create a Personal Access Token button.
+        - In the Add Personal Access Token pane, label the token as “python.” In the Select All row, select the Read/Write radio button. Click the Create Token button.
+        - This is the one and only time the API token will be viewable. Copy the Personal Access Token to the clipboard and temporarily store it in a text editor of choice. Click the I Have Saved My Personal Access                Token button.
+          <img width="975" height="614" alt="image" src="https://github.com/user-attachments/assets/c13c24e7-5dfa-4d7b-ab5a-9db694d86d22" />
+        - Confirm the python token now appears in the Personal Access Tokens section. Minimize the Linode web portal.
+        - Restore the PyCharm editor. For security reasons, the os library will again be used to store the API token as an environment variable so as to not be hardcoded into the program. Under the other constants,                create a new constant called LINODE_TOKEN. As with EMAIL_ADDRESS and EMAIL_PASSWORD, use the environ function on the os module to get the environment variable. Set the function call as a Python variable named            LINODE_TOKEN as shown below:
+          ```
+                  LINODE_TOKEN = os.environ.get('LINODE_TOKEN')
+          ```
+        
+        - Return to the except block. Locate the restart Linode server comment. For the client variable, pass LINODE_TOKEN as a parameter to the LinodeClient function call on the linode_api4 module.
+          ```
+                  client = linode_api4.LinodeClient(LINODE_TOKEN)
+          ```
+
+       - At the top right of PyCharm, click the monitor-website dropdown > Edit Configurations...
+       - On the Run/Debug Configurations screen, click the icon next to the Environment variables textbox.
+       - Click the + button and add LINODE_TOKEN as an environment variable, pasting the API token as the value from the text editor. Click the OK button.
+         <img width="972" height="789" alt="image" src="https://github.com/user-attachments/assets/8e14c510-c3c8-4d56-9ef1-7bf8d56c5886" />
+         
+       - Restore the Linode web portal. Click on Linodes in the left menu. In the right pane, click on the Linode instance for a more detailed view.
+       - Copy the Linode ID number to the clipboard. Minimize the Linode web portal.
+         <img width="975" height="225" alt="image" src="https://github.com/user-attachments/assets/837a7cc5-ec0c-4c8f-9c8a-717b4b79bc6c" />
+
+     
+       - Restore the PyCharm editor. Under the client variable in the except block, call the load function on the client variable. Pass two parameters: the first one to tell the load function the type of resource to              connect to (an instance) and the second one for the instance ID. Paste the instance ID from the clipboard as the second parameter. Set the load function call as a variable named nginx_server as shown below:
+         ```
+                 nginx_server = client.load(linode_api4.Instance, 78380840)
+        ```
+      - Finally, pass the reboot function to the nginx_server variable to restart the server.
+
+        ```
+                nginx_server.reboot()
+        ```           
+
+      - Open a PowerShell window and SSH into the Linux host where the nginx container resides. Enter the docker ps command to reveal the container ID. Copy the container ID to the clipboard. Issue the docker stop               command to stop the container.
+        ```
+                docker ps
+                docker stop <container-id>
+        ```
+        <img width="975" height="176" alt="image" src="https://github.com/user-attachments/assets/00a53a99-93c5-481c-a802-7462d3f87bdc" />
+
+      - Rerun the program. Output will display on the screen that a connection error occurred.
+      - Restore the Linode web portal and notice the server is in a rebooting state.
+        
+        <img width="975" height="436" alt="image" src="https://github.com/user-attachments/assets/2e879bb0-43bf-4fca-9e19-5821d95d5c32" />
+
+        <img width="975" height="338" alt="image" src="https://github.com/user-attachments/assets/15efc626-9b7a-4a3a-a2f3-ed76af34c8f7" />
+
+
+      - In the Linode web portal, confirm the Linux server returns to a running state.
+        <img width="975" height="376" alt="image" src="https://github.com/user-attachments/assets/dccef9a6-88b4-4ec0-a302-1672891579db" />
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
 
 
 
