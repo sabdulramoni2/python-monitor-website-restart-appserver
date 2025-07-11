@@ -342,6 +342,43 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
             ```
                   print(f'Connection error happened: {ex}')
             ```
+          - Rerun the program and notice from the output the except block is executed. The HTTPCoonectionPool exception message is displayed below:
+            <img width="975" height="259" alt="image" src="https://github.com/user-attachments/assets/55e4417e-f52f-4310-abec-434be039f2f5" />
+
+            With the except block confirmed to be functional, the next section covers additional logic in the except block to send an email alert to IT staff.
+
+    - send_notification Function
+      - Recall the existing else statement includes a with block with logic to send email. The same logic for sending email needs to be used in the except block to notify IT staff whenever an exception occurs. First,            this section demonstrates code duplication when sending an email in both the else and except blocks. Then, a function is implemented to eliminate the need to write duplicate logic.
+        - First, copy the with block from the else statement to the clipboard. Paste the with block into the except block as shown below:
+          ```
+                except Exception as ex:
+                    print(f'Connection error happened: {ex}')
+                    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+                        smtp.starttls()
+                        smtp.ehlo()
+                        smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+                        msg = "Subject: SITE DOWN\nFix the issue! Restart the application."
+                        smtp.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, msg)
+          ```
+        - In the else statement, modify the message in the with block as follows to include the response.status_code variable. Doing so will include the HTTP status code in the email. Once again, the f" formats the                string so that the variable can be included inline in a clean manner:
+          ```
+                msg = f"Subject: SITE DOWN\nApplication returned {response.status_code}. Fix the issue! Restart the application."
+          ```
+        - In the except statement, modify the value of the msg variable in the with block to indicate the application is not accessible at all. This also indicates that no HTTP response code is returned.
+          ```
+                   msg = "Subject: SITE DOWN\nApplication not accessible at all."
+          ```
+          Now that the duplicate code has been demonstrated, a function will be introduced to remove the code duplication.
+       
+
+
+
+
+
+
+
+   
+- 
 
 
 
