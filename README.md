@@ -610,7 +610,92 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
         <img width="975" height="376" alt="image" src="https://github.com/user-attachments/assets/dccef9a6-88b4-4ec0-a302-1672891579db" />
 
         
+    -  restart_container Function
+       - After the server is restarted, the nginx container also needs to be restarted to allow the website to be accessible to users again. Recall the logic for restarting the container is already accounted for in               section G of this project walkthrough. Since logic will repeat more than once in this program, a restart_container function will be created in this section. After creation, the restart_container function can be          called in the two places it appears in the program.
+         
+         - Underneath the logic for restarting the Linode server in the except block, enter a couple carriage returns and write another comment to denote restarting the application.
+           ```
+                   # restart the application
+           ```
+         - Towards the top of the monitor-website.py file, under the send_notification function, enter a couple carriage returns and define a new function called restart_container.
+           ```
+                   def restart_container():
+           ```
+           
+        - In the else statement of the try block, cut the logic from under the restart the application comment and paste it underneath the restart_container function. Move the 'application started' print statement from            the bottom to the top of the function as the first line; modify the print statement to state 'Restarting the application...
+        - The below code summarizes these changes
+          
+          ```
+                  def restart_container():
+                      print('Restarting the application…’)
+                      ssh = paramiko.SSHClient()
+                      ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                      ssh.connect(hostname='66.228.39.99', username='root', key_filename='C:/Users/Joseph/.ssh/id_rsa')
+                      stdin, stdout, stderr = ssh.exec_command('docker start 4d189c7fcd4b')
+                      print(stdout.readlines())
+                      ssh.close()
+          ```
 
+        - Call the restart_container function under the else statement of the try block:
+
+          ```
+                    # restart the application
+                    restart_container()
+          ```
+
+        - In the except block, it will take some time for the server to be back online before the nginx container can be restarted. Implementing an infinite while loop is a good use case here when dealing with issues              pertaining to time.  Under the 'restart the application' comment in the except block, create an infinite while loop:
+          ```
+                  # restart the application
+                  while True:
+          ```
+        
+        - As the first line under the infinite while loop, load the Linode client again as done above.
+          ```
+                   nginx_server = client.load(linode_api4.Instance, ID)
+          ```
+
+        - Under the nginx_server variable, write an if statement to continually check the server status. Do this by calling the status function on the nginx_server variable and set the conditional value to 'running'
+
+          ```
+                    if nginx_server.status == 'running':
+          ```
+
+        - Under the if statement of the while loop, call the restart_container function.
+          ```
+                    restart_container()
+          ```
+        - Break the infinite loop so it does not run forever.
+          ```
+                    break
+          ```
+        - Rerun the Python program. Refresh the Linode web portal and confirm the server is in the rebooting state.
+          <img width="975" height="348" alt="image" src="https://github.com/user-attachments/assets/b0872a7d-5132-453b-9e0f-61708e5e111c" />
+
+        - Browse to the IP and port of the nginx container and confirm the application is accessible.
+          <img width="975" height="322" alt="image" src="https://github.com/user-attachments/assets/3d4d8239-3c64-4865-adcf-504f278b7d58" />
+
+        - Observe the output from the Run window, noticing the various output messages from the print statements.
+          <img width="975" height="159" alt="image" src="https://github.com/user-attachments/assets/5652d6fa-2b60-4c84-9fb5-6f53fdc69e40" />
+
+     
+        - Open PowerShell and SSH into the Linode server where the nginx container resides. Run the docker ps command to confirm the nginx container is running.
+          <img width="975" height="142" alt="image" src="https://github.com/user-attachments/assets/bcfd1f74-bc2d-4941-9668-1f6e996c4cc2" />
+
+     
+  - time Library
+
+          
+                  
+
+
+
+
+
+
+
+
+
+      
 
 
 
