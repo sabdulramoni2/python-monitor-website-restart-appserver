@@ -304,8 +304,59 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
       ```
       An exception can occur if the connection is refused, there is a request timeout, or the nginx container is stopped. If the program is run in these cases, the if/else logic will not be executed at all. This issue         will be simulated in the following steps:
       - SSH into the Linux host where the nginx container resides.
+      - Execute the following command to identify the container ID of the nginx container:
+        ```
+                docker ps
+        ```
+      - Copy the container ID to the clipboard and execute the following command to stop the nginx container:
+        ```
+              docker stop <container-id>
+        ```
+
+        <img width="975" height="211" alt="image" src="https://github.com/user-attachments/assets/95bed693-f613-4266-a220-c925e2c5403a" />
+
+      - With the nginx container stopped, return to PyCharm and rerun the program. Sample output from the exception is shown below:
+        <img width="975" height="105" alt="image" src="https://github.com/user-attachments/assets/6affe314-edc8-4130-8135-b966a60f438b" />
+
+      - Resolution: For handling exceptions, a try/except block will be incorporated into the Python program. First, the code will be tested to ensure the except block works as expected. Then, an email notification will         be sent in the event an exception occurs.
+        - Begin by adding a try block underneath the response variable. Indent the entire if/else logic inside the try block as shown below. Move the response variable inside the try block and above the if/else                    statement. The try block will attempt to execute the if/else statement if a response is returned:
+          ```
+                try:
+                      response = requests.get('http://66-228-39-99.ip.linodeusercontent.com:8080/')
+                      if response.status_code == 200:
+                          print('Application is running successfully!')
+                      else:
+                          print('Application Down. Fix it!')
+                          # send email to me
+                          with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+                              smtp.starttls()
+                              smtp.ehlo()
+                              smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+                              msg = "Subject: SITE DOWN\nFix the issue! Restart the application."
+                              smtp.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, msg)
+          ```
 
 
+          - At the same indentation level as the try block, create an except block. The except block will execute if no response from the requests.get function is returned. As shown in the graphic below, hover the mouse             cursor over the word Exception and notice this is a base class for all non-exit exceptions. Much like smtp is a variable in the with statement, ex functions the same as a variable in the except statement:
+          - Inside the except block, write a print statement that displays a connection error occurred and print out the ex variable that shows the exception. The f' denotes the variable will be included inline in the               string:
+            ```
+                  print(f'Connection error happened: {ex}')
+            ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
 
 
 
