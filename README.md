@@ -414,7 +414,7 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
             ```
            - In the except block, modify the message variable so that it is only set to the message body, as done in Step 6. The subject should not be included as it is already accounted for in the function.
              ```
-                   msg = f'Application is not accessible at all.'
+                     msg = f'Application is not accessible at all.'
              ```
            - Delete the entire with block and call the send_notification again, passing the message variable as a parameter.
              ```
@@ -422,11 +422,15 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
              ```
            - The following shadows name warning will appear in the PyCharm editor:
              <img width="690" height="113" alt="image" src="https://github.com/user-attachments/assets/04f5280d-f429-4ce8-95f5-c6984dd9a235" />
-           - This error is caused by the message variable being the same in the function (globally) as it is in the context of the if/else statement. To remedy this issue, in the send_notification function, rename the                msg variable to message as shown below:.
+             
+           - This error is caused by the message variable being the same in the function (globally) as it is in the context of the if/else statement. To remedy this issue, in the send_notification function, rename the                msg variable to message as shown below:
+             
              ```
                    message = f"Subject: SITE DOWN\n{email_msg}"
             ```
+        
            - Also, in the sendmail function call on the smtp module, rename the msg variable that is passed as a parameter:
+             
              ```
                      smtp.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, message)
              ```
