@@ -435,6 +435,7 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
                      smtp.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, message)
              ```
            - With the nginx docker container still in a stopped state, rerun the Python program. The following output shows the except statement is executed.
+             
              <img width="525" height="67" alt="image" src="https://github.com/user-attachments/assets/c759ac52-5d11-48dc-a1da-b9cc69f6e6b6" />
              
            - Check Gmail and notice the message body is the same as the msg variable in the except statement.
