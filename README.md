@@ -682,8 +682,8 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
           <img width="975" height="142" alt="image" src="https://github.com/user-attachments/assets/bcfd1f74-bc2d-4941-9668-1f6e996c4cc2" />
 
      
-  - time Library
-    - To fail-proof the while loop written in the except block, the built-in time library will be leveraged as a precaution to factor in additional time between the server being in the running state and starting the           nginx container. More information about the built-in time library can be found here:  https://docs.python.org/3/library/time.html
+    - time Library
+      - To fail-proof the while loop written in the except block, the built-in time library will be leveraged as a precaution to factor in additional time between the server being in the running state and starting the           nginx container. More information about the built-in time library can be found here:  https://docs.python.org/3/library/time.html
       - At the top of the monitor-website.py file, write an import statement underneath the other import statements to import the built-in time library:
         ```
                 import time
