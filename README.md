@@ -369,8 +369,77 @@ ThiThe purpose of this project is to write a scheduled Python program to automat
                    msg = "Subject: SITE DOWN\nApplication not accessible at all."
           ```
           Now that the duplicate code has been demonstrated, a function will be introduced to remove the code duplication.
-       
+          - First, under the EMAIL_ADDRESS and EMAIL_PASSWORD constants, define a function called send_notification as follows:
+            ```
+                   def send_notification():
+            ```
+         - Inside the send_notification function, write a print statement to display output to the user that an email is being sent.
+           ```
+                    print('Sending an email...') 
+           ```
+           
+          - Copy one of the with blocks from the except or else blocks and paste it underneath the print statement as shown below:
+            ```
+                     def send_notification():
+                         print('Sending an email...') 
+                         with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+                                   smtp.starttls()
+                                   smtp.ehlo()
+                                   smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+                                   msg = f"Subject: SITE DOWN\nApplication returned {response.status_code}. Fix the issue! Restart the application."
+                                   smtp.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, msg)
+            ```
 
+
+          - In the else statement of the try block, delete the first with block and replace it by calling the send_notification function. Delete the “send email to me” comment.
+            ```
+                    else:
+                          print('Application Down. Fix it!')
+                          send_notification()
+            ```
+
+          - As the message body is the only thing that changes in the with blocks, the message body will be passed as a parameter in the send_notification function. Assume the subject will stay the same, but the message             body will change based on whether the else or except statement is executed. Replace the message body with the newly passed email_msg parameter:
+            ```
+                      def send_notification(email_msg):
+                      ...
+                      msg = f"Subject: SITE DOWN\n{email_msg}"
+            ```
+          - In the else statement of the try block, reinsert the message variable by setting it to the message body (e.g. Application returned HTTP status code). Place the message variable between the print statement                and send_notification() function call.
+            ```
+                    msg = f'Application returned {response.status_code}'
+            ```
+          - Pass the message variable as a parameter to the function call.
+            ```
+                  send_notification(msg) 
+            ```
+           - In the except block, modify the message variable so that it is only set to the message body, as done in Step 6. The subject should not be included as it is already accounted for in the function.
+             ```
+                   msg = f'Application is not accessible at all.'
+             ```
+           - Delete the entire with block and call the send_notification again, passing the message variable as a parameter.
+             ```
+                     send_notification(msg)
+             ```
+           - The following shadows name warning will appear in the PyCharm editor:
+             <img width="690" height="113" alt="image" src="https://github.com/user-attachments/assets/04f5280d-f429-4ce8-95f5-c6984dd9a235" />
+           - This error is caused by the message variable being the same in the function (globally) as it is in the context of the if/else statement. To remedy this issue, in the send_notification function, rename the                msg variable to message as shown below:.
+             ```
+                   message = f"Subject: SITE DOWN\n{email_msg}"
+            ```
+           - Also, in the sendmail function call on the smtp module, rename the msg variable that is passed as a parameter:
+             ```
+                     smtp.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, message)
+             ```
+           - With the nginx docker container still in a stopped state, rerun the Python program. The following output shows the except statement is executed.
+             <img width="525" height="67" alt="image" src="https://github.com/user-attachments/assets/c759ac52-5d11-48dc-a1da-b9cc69f6e6b6" />
+             
+           - Check Gmail and notice the message body is the same as the msg variable in the except statement.
+             <img width="975" height="316" alt="image" src="https://github.com/user-attachments/assets/1af7ac78-3db7-46dd-a129-156edf74c087" />
+             
+           - With IT staff now receiving email notifications that there is an issue with the application, it is time to take action to remedy the issue.
+
+
+    - Restart the nginx Container
 
 
 
